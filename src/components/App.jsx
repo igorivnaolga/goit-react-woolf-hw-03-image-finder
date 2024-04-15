@@ -2,6 +2,8 @@ import { Component } from 'react';
 import { fetchImages } from './service/API';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Container } from './App.styled';
+import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Button } from './Button/Button.styled';
 
 export class App extends Component {
   state = {
@@ -13,7 +15,7 @@ export class App extends Component {
     isLoading: false,
   };
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       try {
@@ -45,9 +47,16 @@ export class App extends Component {
   };
 
   render() {
+    const { isError, images } = this.state;
+    const galleryImages = images.length !== 0;
+
     return (
       <Container>
         <Searchbar onSubmit={this.handleSubmit} />
+        {isError && (
+          <p>Oops! Something went wrong! Please try reloading this page!</p>
+        )}
+        {galleryImages && <ImageGallery images={images} />}
       </Container>
     );
   }
