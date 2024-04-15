@@ -3,8 +3,8 @@ import { fetchImages } from './service/API';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Container } from './App.styled';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Button } from './Button/Button.styled';
-import Modal from './Modal/Modal';
+import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -20,7 +20,7 @@ export class App extends Component {
     const { query, page } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       try {
-        this.setState({ isLoading: true, error: false });
+        this.setState({ isLoading: true, isError: false });
         const response = await fetchImages(query, page);
 
         this.setState(prevState => {
@@ -47,17 +47,30 @@ export class App extends Component {
     });
   };
 
-  render() {
-    const { isError, images } = this.state;
-    const galleryImages = images.length !== 0;
+  handleLoadMore = () => {
+    this.setState(prevState => {
+      return {
+        page: prevState.page + 1,
+      };
+    });
+  };
 
+  render() {
+    const { isError, images, page, totalPages, isLoading } = this.state;
+    const galleryImages = images.length !== 0;
+    const notLastPage = page < totalPages;
     return (
       <Container>
         <Searchbar onSubmit={this.handleSubmit} />
         {isError && (
           <p>Oops! Something went wrong! Please try reloading this page!</p>
         )}
+        <Loader isLoading={isLoading} />
+
         {galleryImages && <ImageGallery images={images} />}
+        {galleryImages && notLastPage && (
+          <Button btnName="Load more" onClick={this.handleLoadMore} />
+        )}
       </Container>
     );
   }
