@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import { ImageModal } from '../Modal/Modal';
 import { ImgGalleryItem, ImgGallery } from './ImageGalleryItem.styled';
+import { ImageModal } from '../Modal/Modal';
+
 export class ImageGalleryItem extends Component {
   state = {
     isModalOpen: false,

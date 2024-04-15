@@ -4,6 +4,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { Container } from './App.styled';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button.styled';
+import Modal from './Modal/Modal';
 
 export class App extends Component {
   state = {
